@@ -9,7 +9,6 @@ int main (int argc, char *argv[]){
 	float x1, y1, dx, dy, dt, utop, Re, amu, omega;
 	int nt, niter, it, i, j, size, ij, ije, ijw, ijs, ijn;
 	clock_t start, end; 
-	bool intermediate;
 	
 	size = (nx+2)*(ny+2)*sizeof(float);
 	
@@ -46,8 +45,7 @@ int main (int argc, char *argv[]){
 	initialize(nx, ny, u, v, p);
 	
 	//Apply the boundary condition on u on the top wall
-	intermediate = 0; //Not an intermediate step
-	bc(nx, ny, u, v, utop, intermediate);
+	bc(nx, ny, u, v, utop);
 	
 	//Evaluate the coefficients of the Pressure Poisson Equation (PPE)
 	ppecoeffs(nx, ny, aw, ae, an, as, ap, dx, dy); 
@@ -59,18 +57,16 @@ int main (int argc, char *argv[]){
 		printf("time step = %d\n", it+1);
 		
 		//Solve for uhat and vhat, apply BCs and evaluate source term for PPE
-		intermediate = 1; //Intermediate step
 		momentum(nx, ny, u, v, uh, vh, s, amu, dx, dy, dt);
-		bc(nx, ny, uh, vh, utop, intermediate);
+		bc(nx, ny, uh, vh, utop);
 		ppesource(nx, ny, uh, vh, s, dx, dy, dt);
 		
 		//Run SOR iterations to solve for p
 		sor(nx, ny, niter, aw, ae, an, as, ap, p, s, ph, ttemp, omega);
 		
 		//Correct momentum for p and apply BCs
-		intermediate = 0; //Not an intermediate step
 		momentumcorr(nx, ny, u, v, p, uh, vh, dx, dy, dt);
-		bc(nx, ny, u, v, utop, intermediate);
+		bc(nx, ny, u, v, utop);
 	}
 
 	end = clock();

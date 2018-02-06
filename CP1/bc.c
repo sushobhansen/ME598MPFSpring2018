@@ -1,6 +1,6 @@
 #include "cp1headers.h"
 
-void bc(int nx, int ny, float* u, float* v, float utop, bool intermediate){
+void bc(int nx, int ny, float* u, float* v, float utop){
 	
 	int i,j,ij,ijw,ije,ijn,ijs;
 	
@@ -25,13 +25,7 @@ void bc(int nx, int ny, float* u, float* v, float utop, bool intermediate){
 		j = ny+1;
 		ij  = i +j*(nx+2);ijs = i + (j-1)*(nx+2);
 
-		if(intermediate){
-		  v[ij] = -v[ijs];
-		  u[ij] = -u[ijs];
-		}
-		else{
-			u[ij] = 2*utop - u[ijs];
-			v[ij] = -v[ijs];
-		}
+		u[ij] = 2*utop - u[ijs];
+		v[ij] = -v[ijs];
     }
 }
