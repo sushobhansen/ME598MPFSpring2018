@@ -15,7 +15,7 @@ OPTIONS =
 	$(CC) $(OPTIONS) -c -o $@ $< $(CFLAGS)
 
 $(PROGRAM):	$(OBJECTS)
-	$(CC) $(OPTIONS) -o $(PROGRAM) $(OBJECTS) $(CFLAGS)
+	$(CC) $(OPTIONS) -o $(PROGRAM).out $(OBJECTS) $(CFLAGS)
 	
 clean: 
 	rm -f $(OBJECTS) $(PROGRAM) *.tar 

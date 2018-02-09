@@ -6,7 +6,7 @@ void writedata(int nx, int ny, float dx, float dy, float* u, float* v, float* p)
 	int i,j,ij;
 	FILE *flowfield;
 	
-	flowfield = fopen("driven_cavity_flow_c.plt", "w");
+	flowfield = fopen("velocity.plt", "w");
 	
 	fprintf(flowfield,"x,y,u,v,p\n");
 	
