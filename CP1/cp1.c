@@ -13,16 +13,10 @@ int main (int argc, char *argv[]){
 	//Variables for particle tracking
 	float *up_old, *vp_old, *up_new, *vp_new, *uf, *vf, *xp, *yp;
 	float St, dtp;
-	int np, ntp, itp,nplot;
+	int np, ntp, itp, nplot;
 	
 	size = (nx+2)*(ny+2)*sizeof(float);
-	
-	//Parameters for particle tracking
 	np = 50; //No of particles
-	St = 0.01; //Stokes numbers
-	dtp = dt; //Set time step for particles equal to time step for fluid (guess)
-	ntp = nt; //Set simulation time for particles equal to that for fluid (guess)
-	nplot = 100; //Number of time steps to plot at
 	
 	//Allocate memory to each array
 	u  = (float*) malloc (size);
@@ -62,8 +56,12 @@ int main (int argc, char *argv[]){
 	niter = 200;               // Number of iteration for the Pressure Poisson solver
 	omega = 1.0;              // Optimum value of the omega for SOR method
 	
+	
+	
 	//Initialize all the variables to zero everywhere
 	initialize(nx, ny, np, u, v, p, up_old, vp_old);
+	
+	printf("****Solving for Velocity and Pressure Fields****\n");
 	
 	//Apply the boundary condition on u on the top wall
 	bc(nx, ny, u, v, utop);
@@ -97,6 +95,13 @@ int main (int argc, char *argv[]){
 	//Write velocity field file for plotting
 	writeflowfield(nx, ny, dx, dy, u, v, p);
 	
+	printf("****Solving for Particle Positions****\n");
+	//Parameters for particle tracking
+	St = 0.01; //Stokes numbers
+	dtp = dt; //Set time step for particles equal to time step for fluid (guess)
+	ntp = nt; //Set simulation time for particles equal to that for fluid (guess)
+	nplot = 100; //Number of time steps to plot at
+	
 	//Randomly initialize np particles in [0.25,0.75]^2
 	for (i=0; i<np; i++){
 		xp[i] = 0.25 + (0.75-0.25)*(float)rand()/(float)RAND_MAX;
@@ -108,8 +113,6 @@ int main (int argc, char *argv[]){
 	
 	//Write initial particle position for plotting
 	writeparticlepos(xp, yp, up_old, vp_old, 0, np);
-	
-	
 	
 	//Integrate from 0 to ntp
 	itp = 0;

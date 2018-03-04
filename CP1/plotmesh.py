@@ -4,9 +4,6 @@ import matplotlib.pyplot as plt
 #Read Data
 x,y,u,v,p = np.loadtxt('velocity.plt',delimiter=',',dtype=np.float,skiprows=1,unpack=True)
 
-#Read particle position
-xp,yp,up,vp = np.loadtxt('pos0.plt',delimiter=',',dtype=np.float,skiprows=1,unpack=True)
-
 #Reshape data from vector to a matrix (mesh)
 N = int(np.sqrt(len(x)))
 x = np.reshape(x,(N,N))
@@ -62,14 +59,20 @@ plt.savefig('streamlines.jpg')
 
 plt.show()
 
-#Plot particles
-plt.figure(facecolor='white')
-plt.plot(xp,yp,'ko')
-plt.xlim(0,1)
-plt.ylim(0,1)
-plt.title('Particles at Time 0')
-plt.xlabel('x')
-plt.ylabel('y')
-plt.axis('equal')
+#Plot particles overlaid on streamlines
+for plotnumber in range(0,501,100):
+    xp,yp,up,vp = np.loadtxt('pos'+str(plotnumber)+'.plt',delimiter=',',dtype=np.float,skiprows=1,unpack=True)
+    Np = len(xp)
+    colors = np.random.rand(Np)
+    
+    plt.scatter(xp,yp,c=colors)
+    plt.streamplot(x,y,u,v,color='0.5')
+    plt.xlim(0,1)
+    plt.ylim(0,1)
+    plt.title('Particles at Iteration '+str(plotnumber))
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.axis('equal')
+	plt.savefig('pos'+str(plotnumber)+'.jpg')
 
-plt.show()
+    plt.show()
