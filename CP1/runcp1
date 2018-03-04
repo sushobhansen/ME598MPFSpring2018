@@ -1,4 +1,5 @@
 #!/bin/bash
 
+rm -f *.plt
 make cp1
 ./cp1.out

@@ -1,8 +1,8 @@
 #Makefile for CP1
 
 PROGRAM = cp1
-SOURCE = cp1.c initialize.c ppecoeffs.c ppesource.c momentum.c bc.c sor.c momentumcorr.c writedata.c bilinterp.c
-OBJECTS = cp1.o initialize.o ppecoeffs.o ppesource.o momentum.o bc.o sor.o momentumcorr.o writedata.o bilinterp.o
+SOURCE = cp1.c initialize.c ppecoeffs.c ppesource.c momentum.c bc.c sor.c momentumcorr.c writedata.c bilinterp.c particleintegrate.c
+OBJECTS = cp1.o initialize.o ppecoeffs.o ppesource.o momentum.o bc.o sor.o momentumcorr.o writedata.o bilinterp.o particleintegrate.o
 ARCHIVE = cp1.tar
 
 CC = gcc
@@ -18,7 +18,7 @@ $(PROGRAM):	$(OBJECTS)
 	$(CC) $(OPTIONS) -o $(PROGRAM).out $(OBJECTS) $(CFLAGS)
 	
 clean: 
-	rm -f $(OBJECTS) $(PROGRAM) *.tar 
+	rm -f $(OBJECTS) $(PROGRAM).out *.tar *.plt
 	
 rebuild:
 	clean $(PROGRAM)
