@@ -10,7 +10,12 @@ int main (int argc, char *argv[]){
 	int nt, niter, it, i, j, size, ij, ije, ijw, ijs, ijn;
 	clock_t start, end; 
 	
+	//Variables for particle tracking
+	float *up, *vp, *xp, *yp;
+	int np;
+	
 	size = (nx+2)*(ny+2)*sizeof(float);
+	np = 5;
 	
 	//Allocate memory to each array
 	u  = (float*) malloc (size);
@@ -25,6 +30,11 @@ int main (int argc, char *argv[]){
 	aw = (float*) malloc (size);
 	ap = (float*) malloc (size);
 	s  = (float*) malloc (size);
+	
+	up = (float*) malloc (np);
+	vp = (float*) malloc (np);
+	xp = (float*) malloc (np);
+	yp = (float*) malloc (np);
 	
 	//Define dimensions of the geometry
 	x1 = 1.0;                 // Length of domain along x - axis
@@ -73,8 +83,17 @@ int main (int argc, char *argv[]){
 	printf("Time taken by CPU = %10.8f sec\n", ((float) (end - start)) / CLOCKS_PER_SEC);
 	printf("Simulation time = %f\n",dt*(float)nt);
 	
-	//Write data file for plotting
-	writedata(nx, ny, dx, dy, u, v, p);
+	//Randomly place np particles in [0.25,0.75]^2
+	for (i=0; i<np; i++){
+		xp[i] = 0.25 + (0.75-0.25)*(float)rand()/(float)RAND_MAX;
+		yp[i] = 0.25 + (0.75-0.25)*(float)rand()/(float)RAND_MAX;		
+	}
+	
+	//Write particle position for plotting
+	writeparticlepos(xp, yp, 0, np);
+	
+	//Write velocity filed file for plotting
+	writeflowfield(nx, ny, dx, dy, u, v, p);
 	
 	return 0;
 }

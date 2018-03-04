@@ -1,6 +1,6 @@
 #include "cp1headers.h"
 
-void writedata(int nx, int ny, float dx, float dy, float* u, float* v, float* p){
+void writeflowfield(int nx, int ny, float dx, float dy, float* u, float* v, float* p){
 	
 	float x,y;
 	int i,j,ij;
@@ -20,5 +20,25 @@ void writedata(int nx, int ny, float dx, float dy, float* u, float* v, float* p)
 	}
 	
 	fclose(flowfield);
+	
+}
+
+void writeparticlepos(float* xp, float* yp, int step, int np){
+	
+	int i;
+	char filename[100];
+	FILE *particlepos;
+	
+	sprintf(filename,"pos%d.plt",step);
+	
+	particlepos = fopen(filename,"w");
+	
+	fprintf(particlepos,"xp,yp\n");
+	
+	for(i=0; i<np; i++){
+		fprintf(particlepos,"%f,%f\n",xp[i],yp[i]);
+	}
+	
+	fclose(particlepos);
 	
 }

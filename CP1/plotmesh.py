@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 #Read Data
 x,y,u,v,p = np.loadtxt('velocity.plt',delimiter=',',dtype=np.float,skiprows=1,unpack=True)
 
+#Read particle position
+xp,yp = np.loadtxt('pos0.plt',delimiter=',',dtype=np.float,skiprows=1,unpack=True)
+
 #Reshape data from vector to a matrix (mesh)
 N = int(np.sqrt(len(x)))
 x = np.reshape(x,(N,N))
@@ -56,5 +59,17 @@ plt.xlim(0,1)
 plt.ylim(0,1)
 plt.axis('equal')
 plt.savefig('streamlines.jpg')
+
+plt.show()
+
+#Plot particles
+plt.figure(facecolor='white')
+plt.plot(xp,yp,'ko')
+plt.xlim(0,1)
+plt.ylim(0,1)
+plt.title('Particles at Time 0')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.axis('equal')
 
 plt.show()
