@@ -46,4 +46,15 @@ plt.xlim(0,1)
 plt.ylim(0,1)
 plt.savefig('p.jpg')
 
+#Plot streamlines
+plt.figure(facecolor='white')
+plt.streamplot(x,y,u,v)
+plt.title('Streamlines')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.xlim(0,1)
+plt.ylim(0,1)
+plt.axis('equal')
+plt.savefig('streamlines.jpg')
+
 plt.show()

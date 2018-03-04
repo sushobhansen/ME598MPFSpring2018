@@ -1,7 +1,7 @@
 #include "cp1headers.h"
 
-#define nx 512
-#define ny 512
+#define nx 40
+#define ny 40
 
 int main (int argc, char *argv[]){
 	
@@ -33,11 +33,11 @@ int main (int argc, char *argv[]){
 	//Flow variables
 	dx = x1/nx;
 	dy = y1/ny;
-	dt = 0.000075;                // Time step
 	utop = 1.0;               	// Velocity of the Lid
+	dt = 0.5*dx/utop;
 	Re = 100.0;               // Reynolds number of the flow
 	amu = x1 * utop / Re;     // We are calculating the viscosity from the Reynolds number of the flow
-	nt = 100;                // Maximum number of iterations
+	nt = 500;                // Maximum number of iterations
 	niter = 200;               // Number of iteration for the Pressure Poisson solver
 	omega = 1.0;              // Optimum value of the omega for SOR method
 	
@@ -71,6 +71,7 @@ int main (int argc, char *argv[]){
 
 	end = clock();
 	printf("Time taken by CPU = %10.8f sec\n", ((float) (end - start)) / CLOCKS_PER_SEC);
+	printf("Simulation time = %f\n",dt*(float)nt);
 	
 	//Write data file for plotting
 	writedata(nx, ny, dx, dy, u, v, p);
