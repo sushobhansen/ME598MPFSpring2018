@@ -23,7 +23,7 @@ void writeflowfield(int nx, int ny, float dx, float dy, float* u, float* v, floa
 	
 }
 
-void writeparticlepos(float* xp, float* yp, int step, int np){
+void writeparticlepos(float* xp, float* yp, float* up, float* vp, int step, int np){
 	
 	int i;
 	char filename[100];
@@ -33,10 +33,10 @@ void writeparticlepos(float* xp, float* yp, int step, int np){
 	
 	particlepos = fopen(filename,"w");
 	
-	fprintf(particlepos,"xp,yp\n");
+	fprintf(particlepos,"xp,yp,up,vp\n");
 	
 	for(i=0; i<np; i++){
-		fprintf(particlepos,"%f,%f\n",xp[i],yp[i]);
+		fprintf(particlepos,"%f,%f,%f,%f\n",xp[i],yp[i],up[i],vp[i]);
 	}
 	
 	fclose(particlepos);

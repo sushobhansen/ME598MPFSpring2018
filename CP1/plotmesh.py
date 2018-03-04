@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 x,y,u,v,p = np.loadtxt('velocity.plt',delimiter=',',dtype=np.float,skiprows=1,unpack=True)
 
 #Read particle position
-xp,yp = np.loadtxt('pos0.plt',delimiter=',',dtype=np.float,skiprows=1,unpack=True)
+xp,yp,up,vp = np.loadtxt('pos0.plt',delimiter=',',dtype=np.float,skiprows=1,unpack=True)
 
 #Reshape data from vector to a matrix (mesh)
 N = int(np.sqrt(len(x)))

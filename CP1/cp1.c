@@ -89,8 +89,11 @@ int main (int argc, char *argv[]){
 		yp[i] = 0.25 + (0.75-0.25)*(float)rand()/(float)RAND_MAX;		
 	}
 	
+	//Interpolate velocity to particle points
+	bilinterp(u, v, xp, yp, up, vp, np, nx, ny, dx, dy);
+	
 	//Write particle position for plotting
-	writeparticlepos(xp, yp, 0, np);
+	writeparticlepos(xp, yp, up, vp, 0, np);
 	
 	//Write velocity filed file for plotting
 	writeflowfield(nx, ny, dx, dy, u, v, p);

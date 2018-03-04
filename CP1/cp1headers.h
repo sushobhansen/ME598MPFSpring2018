@@ -12,4 +12,5 @@ void sor(int nx, int ny, int niter, float* aw, float* ae, float* an, float* as, 
 void momentumcorr(int nx, int ny, float* u, float* v, float* p, float* uh, float* vh, float dx, float dy, float dt);
 void ppesource(int nx, int ny, float* uh, float* vh, float* s, float dx, float dy, float dt);
 void writeflowfield(int nx, int ny, float dx, float dy, float* u, float* v, float* p);
-void writeparticlepos(float* xp, float* yp, int step, int np);
+void writeparticlepos(float* xp, float* yp, float* up, float* vp, int step, int np);
+void bilinterp(float *u, float *v, float *xp, float *yp, float* up, float *vp, int np, int nx, int ny, float dx, float dy);

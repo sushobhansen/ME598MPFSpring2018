@@ -1,12 +1,12 @@
 #Makefile for CP1
 
 PROGRAM = cp1
-SOURCE = cp1.c initialize.c ppecoeffs.c ppesource.c momentum.c bc.c sor.c momentumcorr.c writedata.c
-OBJECTS = cp1.o initialize.o ppecoeffs.o ppesource.o momentum.o bc.o sor.o momentumcorr.o writedata.o
+SOURCE = cp1.c initialize.c ppecoeffs.c ppesource.c momentum.c bc.c sor.c momentumcorr.c writedata.c bilinterp.c
+OBJECTS = cp1.o initialize.o ppecoeffs.o ppesource.o momentum.o bc.o sor.o momentumcorr.o writedata.o bilinterp.o
 ARCHIVE = cp1.tar
 
 CC = gcc
-CFLAGS = -I.
+CFLAGS = -lm -I.
 DEPS = cp1headers.h
 OPTIONS = 
 #OPTIONS = -g -debug extended -traceback -O0
