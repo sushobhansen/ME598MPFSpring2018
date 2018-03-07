@@ -97,15 +97,15 @@ int main (int argc, char *argv[]){
 	
 	printf("****Solving for Particle Positions****\n");
 	//Parameters for particle tracking
-	St = 0.01; //Stokes numbers
+	St = 1.0; //Stokes numbers
 	dtp = dt; //Set time step for particles equal to time step for fluid (guess)
 	ntp = nt; //Set simulation time for particles equal to that for fluid (guess)
 	nplot = 100; //Number of time steps to plot at
 	
 	//Randomly initialize np particles in [0.25,0.75]^2
 	for (i=0; i<np; i++){
-		xp[i] = 0.25 + (0.75-0.25)*(float)rand()/(float)RAND_MAX;
-		yp[i] = 0.25 + (0.75-0.25)*(float)rand()/(float)RAND_MAX;		
+		xp[i] = 0.40 + (0.60-0.40)*(float)rand()/(float)RAND_MAX;
+		yp[i] = 0.40 + (0.60-0.40)*(float)rand()/(float)RAND_MAX;		
 	}
 	
 	//Interpolate fluid velocity to initial particle positions
