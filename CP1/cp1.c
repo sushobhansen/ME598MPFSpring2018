@@ -136,6 +136,7 @@ int main (int argc, char *argv[]){
 		
 		//Put new values into old values for next time step
 		swap(up_old, up_new, np);
+		swap(vp_old, vp_new, np);
 		
 		//Interpolate fluid velocity to new particle positions
 		bilinterp(u, v, xp, yp, uf, vf, np, nx, ny, dx, dy);
