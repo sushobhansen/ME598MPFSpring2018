@@ -29,7 +29,10 @@ void integrateposition(float* xp, float* up_old, float* up_new, float dtp, int n
 	
 	for (k=0; k<np; k++){
 		xp[k] = xp[k] + 0.5*dtp*(up_old[k]+up_new[k]);
-		if(xp[k]>1.0){xp[k]=1.0;} //If particle leaves domain, put it back in the domain
+		if(xp[k]>1.0 || xp[k]<0.0){
+			up_new[k] = -1.0*up_new[k];
+			xp[k] = xp[k] + 0.5*dtp*(up_old[k]+up_new[k]);
+		} //If particle leaves domain, make it bounce back elastically
 	}
 	
 }

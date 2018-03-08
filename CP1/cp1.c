@@ -104,8 +104,8 @@ int main (int argc, char *argv[]){
 	
 	//Randomly initialize np particles in [0.25,0.75]^2
 	for (i=0; i<np; i++){
-		xp[i] = 0.40 + (0.60-0.40)*(float)rand()/(float)RAND_MAX;
-		yp[i] = 0.40 + (0.60-0.40)*(float)rand()/(float)RAND_MAX;		
+		xp[i] = 0.25 + (0.75-0.25)*(float)rand()/(float)RAND_MAX;
+		yp[i] = 0.25 + (0.75-0.25)*(float)rand()/(float)RAND_MAX;		
 	}
 	
 	//Interpolate fluid velocity to initial particle positions
