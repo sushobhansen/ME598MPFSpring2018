@@ -1,7 +1,7 @@
 #include "cp1headers.h"
 
-#define nx 40
-#define ny 40
+#define nx 41
+#define ny 41
 
 int main (int argc, char *argv[]){
 	
@@ -46,15 +46,15 @@ int main (int argc, char *argv[]){
 	yl = 1.0;                 // Length of domain along y - axis
 	
 	//Flow variables
-	dx = xl/nx;
-	dy = yl/ny;
+	dx = xl/(float)(nx-1);
+	dy = yl/(float)(ny-1);
 	utop = 1.0;               	// Velocity of the Lid
 	dt = 0.5*dx/utop;
 	Re = 100.0;               // Reynolds number of the flow
 	amu = xl * utop / Re;     // We are calculating the viscosity from the Reynolds number of the flow
 	nt = 500;                // Maximum number of iterations
 	niter = 200;               // Number of iteration for the Pressure Poisson solver
-	omega = 1.0;              // Optimum value of the omega for SOR method
+	omega = 0.8;              // Optimum value of the omega for SOR method
 	
 	
 	
@@ -90,7 +90,7 @@ int main (int argc, char *argv[]){
 
 	end = clock();
 	printf("Time taken by CPU for fluid solution = %10.8f sec\n", ((float) (end - start)) / CLOCKS_PER_SEC);
-	printf("Simulation time = %f\n",dt*(float)nt);
+	printf("Simulation time = %f, time step = %f\n",dt*(float)nt,dt);
 	
 	//Write velocity field file for plotting
 	writeflowfield(nx, ny, dx, dy, u, v, p);
@@ -99,8 +99,8 @@ int main (int argc, char *argv[]){
 	//Parameters for particle tracking
 	St = 1.0; //Stokes numbers
 	dtp = dt; //Set time step for particles equal to time step for fluid (guess)
-	ntp = nt; //Set simulation time for particles equal to that for fluid (guess)
-	nplot = 100; //Number of time steps to plot at
+	ntp = 2000; //Set simulation time for particles equal to that for fluid (guess)
+	nplot = 400; //Number of time steps to plot at
 	
 	//Randomly initialize np particles in [0.25,0.75]^2
 	for (i=0; i<np; i++){
@@ -148,7 +148,7 @@ int main (int argc, char *argv[]){
 	end = clock();
 	
 	printf("Time taken by CPU for particle tracking = %10.8f sec\n", ((float) (end - start)) / CLOCKS_PER_SEC);
-	printf("Simulation time = %f\n",dt*(float)nt);
+	printf("Simulation time = %f, time step = %f\n",dtp*(float)ntp,dtp);
 	
 	
 	
