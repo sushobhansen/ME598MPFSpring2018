@@ -1,0 +1,5 @@
+#!/bin/bash
+
+rm -f *.plt
+make cp2task1
+./cp2task1.out
