@@ -8,3 +8,6 @@ Particle tracking in a cavity with low Re = 100
 ## Computer Problem 2
 ### Task 1
 Advection of an air bubble in a fluid medium using a level sets approach
+
+### Task 2
+CSF formulation for evaluating pressure difference at the interface of a static bubble using exact curvature
