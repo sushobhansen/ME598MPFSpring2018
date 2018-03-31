@@ -1,12 +1,12 @@
 #include "cp2task1headers.h"
 
-#define nx 41
-#define ny 41
+#define nx 321
+#define ny 321
 
 int main (int argc, char *argv[]){
 	
-	float *u, *v, *phi, *phi_new;
-	float xl, yl, dx, dy, dt, velocity;
+	float *u, *v, *phi, *phi_new, *phi0;
+	float xl, yl, dx, dy, dt, dtau, velocity, epsilon;
 	float xcenter0, ycenter0, radius, xcenterf, ycenterf;
 	int nt, niter, it, i, j, size, ij, ije, ijw, ijs, ijn;
 	clock_t start, end; 
@@ -18,6 +18,7 @@ int main (int argc, char *argv[]){
 	v  = (float*) malloc (size);
 	phi = (float*) malloc (size);
 	phi_new = (float*) malloc (size);
+	phi0 = (float*) malloc (size);
 	
 	//Define dimensions of the geometry
 	xl = 8.0;                 // Length of domain along x - axis
@@ -32,13 +33,16 @@ int main (int argc, char *argv[]){
 	dx = xl/(float)(nx-1);
 	dy = yl/(float)(ny-1);
 	velocity = 1.0;               	// Fixed velocity components
-	dt = 0.5/(velocity/dx + velocity/dy); //Courant number of 0.5
+	dt = 0.5/(velocity/dx + velocity/dy); //Courant number of 0.5 for main time step
+	dtau = dt/5.0; //Courant number of 0.1 for reinitialization
 	nt = (int)ceil((fabs(xcenterf-xcenter0)/velocity)/dt);                // Number of iterations to bring circle to final position
-	niter = 5;               // Number of iteration for reinitialization
+	niter = 10;               // Number of iteration for reinitialization
+	epsilon = 3.0*dx; //bandwidth
 	
 	//Initialize and set BCs (zero-gradient) for velocity and phi
 	initialize(nx, ny, dx, dy, xcenter0, ycenter0, radius, velocity, u, v, phi);
-	bc(nx, ny, u, v, phi);
+	bcvelocity(nx, ny, u, v);
+	bcphi(nx,ny,phi);
 	swap(nx, ny, phi_new, phi); //Copy phi into phi_new
 	
 	//Write initial data
@@ -51,14 +55,21 @@ int main (int argc, char *argv[]){
 	
 	for (it = 0; it < nt; it++){
 		printf("Advection time step = %d\n",it+1);
-		advect(nx, ny, dx, dy, dt, u, v, phi, phi_new); //phi_new is the advected field
-		swap(nx, ny, phi, phi_new); //Copy phi_new into phi, phi is lost
+		advectx(nx, ny, dx, dt, u, phi, phi_new, epsilon); //advects in x, phi* stored in phi_new
+		bcphi(nx, ny, phi_new); //set bc for phi_new
+		advecty(nx, ny, dy, dt, v, phi, phi_new, epsilon); //advects in y, phi_new stores final value
+		bcphi(nx, ny, phi_new); //set bc for phi_new
+		swap(nx, ny, phi, phi_new); //Copy phi_new into phi, phi is advected field
 				
 		printf("Reinitializing...\n");
-		reinitialize(nx, ny, niter, dx, dy, dt*2.0, phi, phi_new);
-		swap(nx, ny, phi, phi_new);
-		bc(nx, ny, u, v, phi);
-		writephi(nx, ny, dx, dy, phi, it+1); printf("Writing to file...\n");
+		reinitialize(nx, ny, niter, dx, dy, dtau, phi, phi_new, phi0, epsilon); //reinitialize, phi_new is reinitialized field
+		swap(nx, ny, phi, phi_new); //phi is reinitialized field
+		bcphi(nx,ny,phi);
+		
+		if((it+1)%80==0){
+		writephi(nx, ny, dx, dy, phi, it+1); 
+		printf("Writing to file...\n");
+		}
 	}
 	
 	end = clock();

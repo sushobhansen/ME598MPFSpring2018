@@ -50,7 +50,7 @@ void writephi(int nx, int ny, float dx, float dy, float* phi, int step){
 }
 
 void swap(int nx, int ny, float* phi, float* phi_new){
-	/*Swaps phi_new into phi and phi is lost*/
+	/*Swaps phi_new into phi and phi is lost, equivalent of phi = phi_new*/
 	
 	int i,j,ij;
 	
