@@ -11,8 +11,8 @@ void advectx(int nx, int ny, float dx, float dt, float* u, float* phi, float* ph
 			ijw = (i-1)+ j*(nx+2);
 			
 			
-			//if(fabs(phi[ij])<=epsilon)	
-				if(1)
+			if(fabs(phi[ij])<=epsilon)	
+				//if(1)
 			{
 				if(u[ij]>=0.0){
 					phi_new[ij] = phi[ij] - dt*u[ij]*(phi[ij]-phi[ijw])/dx;
@@ -37,8 +37,8 @@ void advecty(int nx, int ny, float dy, float dt, float* v, float* phi, float* ph
 			ijs = i + (j-1)*(nx+2);
 			
 					
-			//if(fabs(phi[ij])<=epsilon)	
-				if(1)
+			if(fabs(phi[ij])<=epsilon)	
+				//if(1)
 			{
 				if(v[ij]>=0.0){
 					phi_new[ij] = phi_new[ij] - dt*v[ij]*(phi[ij]-phi[ijs])/dy;

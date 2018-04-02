@@ -34,10 +34,10 @@ int main (int argc, char *argv[]){
 	dy = yl/(float)(ny-1);
 	velocity = 1.0;               	// Fixed velocity components
 	dt = 0.5/(velocity/dx + velocity/dy); //Courant number of 0.5 for main time step
-	dtau = dt/5.0; //Courant number of 0.1 for reinitialization
+	dtau = 0.1/(velocity/dx + velocity/dy); //Courant number of 0.1 for reinitialization
 	nt = (int)ceil((fabs(xcenterf-xcenter0)/velocity)/dt);                // Number of iterations to bring circle to final position
 	niter = 10;               // Number of iteration for reinitialization
-	epsilon = 3.0*dx; //bandwidth
+	epsilon = 30.0*dx; //bandwidth
 	
 	//Initialize and set BCs (zero-gradient) for velocity and phi
 	initialize(nx, ny, dx, dy, xcenter0, ycenter0, radius, velocity, u, v, phi);
