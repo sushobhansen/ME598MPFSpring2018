@@ -35,10 +35,10 @@ p = zeros(Ny+2,Nx+2);
 
 % Define IC for Phi %
 phi = sqrt((X-xc).^2 + (Y-yc).^2)-r;
-[c,h] = contour(X,Y,phi); 
+[c,h] = contour(X*100,Y*100,phi); 
 clabel(c,h);
-axis equal; %set(gca,'Ydir','reverse');
-
+axis equal; 
+title('\phi'); xlabel('x (cm)'); ylabel('y (cm)');
 %% Compute Properties %%
 epsilon = 3*dx;
 H = zeros(size(phi));
@@ -46,11 +46,13 @@ H(phi < -epsilon) = 0;
 H(phi > epsilon) = 1;
 H(abs(phi) <= epsilon) = 0.5*(1 + phi(abs(phi) <= epsilon)/epsilon + 1/pi * sin(pi*phi(abs(phi) <= epsilon)/epsilon));
 figure
-contour(X,Y,H); axis equal;
+contour(X*100,Y*100,H); axis equal;
+title('H_\epsilon'); xlabel('x (cm)'); ylabel('y (cm)');
 
 rho_tmp = rho_g + (rho_l - rho_g)*H;            % 2D density field
 figure
-contour(X,Y,rho_tmp); axis equal; colorbar;
+contour(X*100,Y*100,rho_tmp); axis equal; colorbar;
+title('Density \rho'); xlabel('x (cm)'); ylabel('y (cm)');
 
 mu = mu_g + (mu_l - mu_g)*H;                % 2D viscosity field
 
@@ -59,7 +61,8 @@ delta(phi < -epsilon) = 0;
 delta(phi > epsilon) = 0;
 delta(abs(phi) <= epsilon) = 0.5*(1/epsilon + 1/epsilon * cos(pi*phi(abs(phi) <= epsilon)/epsilon));
 figure
-contour(X,Y,delta); axis equal; colorbar;
+contour(X*100,Y*100,delta); axis equal; colorbar;
+title('\delta_\epsilon (\phi)'); xlabel('x (cm)'); ylabel('y (cm)');
 
 Dx = 1/(dx^2)*(diag(-2*ones(Nx,1)) + diag(ones(Nx-1,1),1) + diag(ones(Nx-1,1),-1));                  % x second derivative Matrix
 Dx = sparse(Dx);
@@ -76,14 +79,15 @@ Cy(1,2) = 0; Cy(1,1) = 1; Cy(Ny,Ny-1) = 0; Cy(Ny,Ny) = 1;       % collocated zer
 gradphi_x = phi*Cx';
 gradphi_y = Cy*phi;
 figure
-contourf(X,Y,gradphi_x); axis equal; colorbar;
+contourf(X*100,Y*100,gradphi_x); axis equal; colorbar;
+title('\nabla \phi _x'); xlabel('x (cm)'); ylabel('y (cm)');
 figure
-contourf(X,Y,gradphi_y); axis equal; colorbar;
+contourf(X*100,Y*100,gradphi_y); axis equal; colorbar;
+title('\nabla \phi _y'); xlabel('x (cm)'); ylabel('y (cm)');
 
 CSF_x = -sigma*xi*delta.*gradphi_x;
 CSF_y = -sigma*xi*delta.*gradphi_y;
 
-contourf(X,Y,gradphi_y); axis equal; colorbar;
 
 %% Time step %%
 
@@ -153,10 +157,16 @@ MaxErr = 0.0001;
     end
 
 figure
-contourf(X,Y,p(2:Ny+1,2:Nx+1)); axis equal; colorbar;
+contourf(X*100,Y*100,p(2:Ny+1,2:Nx+1)); axis equal; colorbar;
+title('Pressure Field (Pa)'); xlabel('x (cm)'); ylabel('y (cm)');
 
 u_new = -dt*(1./rho_tmp).*(p(2:Ny+1,2:Nx+1)*Cx') + uhat_tmp;
 v_new = -dt*(1./rho_tmp).*(Cy*p(2:Ny+1,2:Nx+1)) + vhat_tmp;
 
 figure
-contourf(X,Y,u_new); axis equal; colorbar;
+contourf(X*100,Y*100,u_new); axis equal; colorbar;
+title('u (m/s)'); xlabel('x (cm)'); ylabel('y (cm)');
+
+figure
+contourf(X*100,Y*100,v_new); axis equal; colorbar;
+title('v (m/s)'); xlabel('x (cm)'); ylabel('y (cm)');
